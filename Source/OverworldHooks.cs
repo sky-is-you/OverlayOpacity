@@ -22,7 +22,11 @@ public static class OverworldHooks
     {
         if (currentOverworld == null) return;
         OverlayMeta meta = OverworldHelperImports.FindConfig<OverlayMeta>(area);
-        if (meta!=null && meta.OverlayOpacity!=null) overlayAlphaEaser.Target = meta.OverlayOpacity.OverlayOpacity;
+        float opac = 0.45f; // default if no config present
+        if (meta != null && meta.OverlayOpacity != null) opac = meta.OverlayOpacity.OverlayOpacity;
+        if (opac>1) opac = 1; // saturate if outside range
+        if (opac<0) opac = 0;
+        overlayAlphaEaser.Target = opac;
     }
 
     public static void Update()
